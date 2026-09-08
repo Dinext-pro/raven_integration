@@ -6,7 +6,7 @@ from frappe.query_builder.functions import Count
 from frappe.utils import escape_html
 
 from raven_integration.engine import CONJUNCTION_OR, MAX_TREE_DEPTH, MAX_TREE_NODES, is_group
-from raven_integration.utils import raven_installed
+from raven_integration.utils import active_apps, raven_installed
 
 _VALID_WS_TYPES = {"Public", "Private"}
 _VALID_CH_TYPES = {"Public", "Private", "Open"}
@@ -686,7 +686,7 @@ def is_setup() -> dict:
 	# installed_apps, but its hooks do not load and its scheduled jobs do not run,
 	# so sync cannot work. Reporting it as present opens the Settings gate on an
 	# integration that will silently do nothing.
-	apps = frappe.get_active_apps()
+	apps = active_apps()
 	return {
 		"raven": "raven" in apps,
 		"raven_integration": "raven_integration" in apps,
